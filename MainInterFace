@@ -1,0 +1,294 @@
+/**
+ * 
+ */
+/**
+ * @author Tyler Buckley
+ * 10-29-2021
+ * CSC300-01 Software Development 
+ * Dr. Amlan Chatterjee
+ * Assignment # 07
+ *
+ */
+import java.io.*;
+import java.util.*;
+// I have implemented the whole code using a Social Media Class
+// To store the information and posts of Users I have used User class
+// To store the information and posts of Posts I have used Post class
+// Refer to these classes below
+public class MainInterFace
+{
+  public static void main (String[] args)
+  {
+    SocialMedia SM = new SocialMedia ();   // Initialize a social media named SM
+      SM.start ();                         // Calling Start function of Social Media
+  }
+}
+class User
+{
+  public String name;                     
+  private int age;
+  private String gender;
+  private String relStatus;
+  private ArrayList<String> Posts = new ArrayList<String>();
+  Scanner sc = new Scanner(System.in);
+  // Constructor to input User's info, for example: name, age, gender, relation status etc.
+  User()
+  {
+      System.out.println("Enter name");
+      this.name = sc.next();
+      System.out.println("Enter age");
+      this.age = sc.nextInt();
+      System.out.println("Enter gender");
+      this.gender = sc.next();
+      System.out.println("Enter relationship status");
+      this.relStatus = sc.next();
+      System.out.println("Do you want to add Posts? 0 for No, 1 for Yes");
+      // asking to add posts
+      int a = sc.nextInt();
+      if(a==1) this.addPost();   // calling addPost if user pressed 1
+      
+  }
+  // the following function is needed to show user's information
+  public void viewProfile()
+  {
+      System.out.print("User's Name: "); 
+      System.out.println(name);
+      System.out.print("Age: ");
+      System.out.println(age);
+      System.out.print("Gender: ");
+      System.out.print(gender);
+      System.out.println("Relationship status: ");
+      System.out.println(relStatus);
+      System.out.println("To view posts for this user, press 1 else 0: "); // asking to view posts
+
+      int a = sc.nextInt();
+      if(a==1){
+          this.viewPosts();    // if 1 is entered viewPosts is called
+      }
+  }
+// the following function is used to view Posts of user
+  public void viewPosts()
+  {
+      // Posts are stored in an arraylist of strings      
+      if(Posts.size()==0) System.out.println("No posts!");
+      for(int i = 0; i< Posts.size(); i++)
+      {
+          System.out.print(i+1);
+          System.out.print(": ");
+          System.out.println(Posts.get(i));
+      }
+  }
+ // the following method is used to add a post for the particular user
+ // if their are already 3 posts, it shows a message that no new post can be added
+ 
+ 
+ public void addPost()
+ {
+     // we take input from user word by word, if 'end' is written we stop taking input
+     System.out.println("Please enter the post content (Use \\n for return or new line and write end to end)");
+     if(Posts.size()==3){
+         System.out.println("Can't add more than 3 posts"); return;
+         // since only 3 posts can be there, at max
+     }
+     String Post = "";
+     while(sc.hasNext())
+     {
+         String s1 = sc.next();
+         if(s1.equals("end")) break;
+         Post += s1;
+         
+     }
+     
+     Posts.add(Post);
+     
+ }
+}
+// the following Page class is implemented same as User except the fact that it does not have 
+// the age, gender and relationship status as variables
+// all functions are same as User class so I am not adding the description
+class Page
+{
+  public String name;
+  private String type;
+  
+  
+  private ArrayList<String> Posts = new ArrayList<String>();
+  Scanner sc = new Scanner(System.in);
+  Page()
+  {
+      System.out.println("Enter name");
+      this.name = sc.next();
+      System.out.println("Enter Page's type (ie Celebrity, Company, Politician, etc.)");
+      this.type = sc.next();
+      System.out.println("Do you want to add Posts? 0 for No, 1 for Yes");
+      int a = sc.nextInt();
+      if(a==1) this.addPost();
+      
+  }
+  public void viewProfile()
+  {
+      System.out.print("Page Name: "); 
+      System.out.println(name);
+      System.out.print("Type: ");
+      System.out.println(type);
+      System.out.println("To view posts for this user, press 1 else 0: ");
+      int a = sc.nextInt();
+      if(a==1){
+          this.viewPosts();
+      }
+  }
+  public void viewPosts()
+  {
+      if(Posts.size()==0) System.out.println("No posts!");
+      for(int i = 0; i< Posts.size(); i++)
+      {
+          System.out.print(i+1);
+          System.out.print(": ");
+          System.out.println(Posts.get(i));
+      }
+  }
+ public void addPost()
+ {
+     if(Posts.size()==3){
+         System.out.println("Can't add more than 3 posts"); return;
+     }
+     System.out.println("Please enter the post content (Use \\n for return or new line and write end to end)");
+     String Post = "";
+     while(sc.hasNext())
+     {
+         String s1 = sc.next();
+         if(s1.equals("end")) break;
+         Post += s1;
+         
+     }
+     
+     Posts.add(Post);
+     
+ }
+}
+// this class stores the available users and pages at any moment
+// the users as well as pages are stored in seperate ArrayLists
+// the total no of users and pages are stored in size variable
+
+class SocialMedia
+{
+  private int size = 0;
+  private Scanner sc = new Scanner (System.in);
+  private ArrayList < User > Users = new ArrayList < User > ();
+  private ArrayList < Page > Pages = new ArrayList < Page > ();
+  // function to add a user, if the size of social media exceeds 5 it does not adds the user
+  public void addUser (User U)
+  {
+    if (size < 5)
+      {
+        Users.add (U);
+        System.out.println ("User added succesfully!");
+        size++;
+      }
+    else
+      {
+        System.out.println ("Can't add user, already 5 pages/users exist!");
+      }
+  }
+  // function to add a page 
+  public void addPage (Page P)
+  {
+    if (size < 5)
+      {
+        Pages.add (P);
+        System.out.println ("Page added succesfully!");
+        size++;
+      }
+    else
+      {
+        System.out.println ("Can't add page, already 5 pages/users exist!");
+      }
+  }
+  // start method: the following function provides the user with a number of options
+  // to perform various actions, see explanation inside the function
+  public void start ()
+  {
+    System.out.println ("Welcome to Social Media");
+    System.out.print ("No of Users: ");
+    System.out.println (Users.size ());
+    System.out.print ("No of Pages: ");
+    System.out.println (Users.size ());
+
+    while (true)
+
+      {
+        System.out.println ("Options: ");
+        System.out.println ("(1) Show all Users");
+        System.out.println ("(2) Show all Pages");
+        System.out.println ("(3) Add a new User");
+        System.out.println ("(4) Add a new Page");
+        System.out.println ("(5) Close");
+
+        int a = sc.nextInt ();
+
+        if (a == 1)    // If user pressed 1, iterate over ArrayList of users and show the users' name
+          {
+            if (Users.size () == 0)
+              System.out.println ("No users");
+            else
+            while (true)
+              {
+                for (int i = 0; i < Users.size (); i++)
+                  {
+                    System.out.print (i + 1);
+                    System.out.print (". ");
+                    System.out.println (Users.get (i).name);
+                  }
+
+                System.out.println
+                  ("Enter the number of user whose profile you want to view, (press -1 to go back): ");
+// ask the user to view profile
+                int x = sc.nextInt ();
+                if(x== -1) break;
+                else
+                if (x > Users.size () || x-1<0)
+                  System.out.println ("No such user");
+                else
+                  Users.get (x-1).viewProfile (); // call view profile for the entered user
+
+              }
+          }
+        if (a == 2) // similarly pages are displayed if the user pressed 2
+          {
+            if (Pages.size () == 0)
+              System.out.println ("No pages");
+            else
+            while(true)
+            {for (int i = 0; i < Pages.size (); i++)
+              {
+                System.out.print (i + 1);
+                System.out.print (". ");
+                System.out.println (Pages.get (i).name);
+              }
+            System.out.println
+                  ("Enter the number of Page whose profile you want to view, (press -1 to go back): ");
+                int x = sc.nextInt ();
+                if(x== -1) break;
+                else
+                if (x > Pages.size () || x-1<0)
+                  System.out.println ("No such user");
+                else
+                  Users.get (x-1).viewProfile ();}
+
+          }
+        if (a == 3)    // Create a new user if the user pressed 3 and call addUser to add the user
+          {
+            User U = new User ();
+            this.addUser (U);
+          }
+        if (a == 4)   // // Create a new user if the user pressed 3 and call addUser to add the user
+          {  
+            Page P = new Page ();
+            this.addPage (P);
+          }
+        if (a == 5)
+          return;
+      }
+
+  }
+}
